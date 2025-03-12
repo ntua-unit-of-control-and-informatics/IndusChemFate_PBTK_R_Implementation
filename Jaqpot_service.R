@@ -567,7 +567,6 @@ create.params <- function(user_input) {
       params$FrMarrow = 0.034 # fraction cardiac output rest
     }
     
-    
     params$VolCmpAdip = params$VolAdip #  'litre
     params$VolCmpBone = params$VolBone #  'litre
     params$VolCmpBrain = params$VolBrain #  'litre
@@ -595,7 +594,6 @@ create.params <- function(user_input) {
     params$FlowOrgMarrow = params$FrMarrow * params$CardOutp #   'litres/hour
     
     # Extract chemical properties
-    # Parent Substance
     # Parent substance (index 0)
     mw_0 <- mw_0 # molecular weight
     params$mw_0 = mw_0
@@ -930,8 +928,7 @@ create.params <- function(user_input) {
 create.inits <- function(parameters) {
   with(as.list(parameters), {
     # Initialize all state variables to zero
-    # Venous blood from organs
-    # M_Ven_0 <- 0; M_Ven_1 <- 0; M_Ven_2 <- 0; M_Ven_3 <- 0; M_Ven_4 <- 0;
+
     # Adipose tissue
     M_Adip_0 <- 0; M_Adip_1 <- 0; M_Adip_2 <- 0; M_Adip_3 <- 0; M_Adip_4 <- 0;
     
@@ -993,7 +990,6 @@ create.inits <- function(parameters) {
     
     # Return all initial states in a named vector
     return(c(
-      # 'M_Ven_0'=M_Ven_0, 'M_Ven_1'=M_Ven_1, 'M_Ven_2'=M_Ven_2, 'M_Ven_3'=M_Ven_3, 'M_Ven_4'=M_Ven_4,
       'M_Adip_0'=M_Adip_0, 'M_Adip_1'=M_Adip_1, 'M_Adip_2'=M_Adip_2, 'M_Adip_3'=M_Adip_3, 'M_Adip_4'=M_Adip_4,
       'M_Bone_0'=M_Bone_0, 'M_Bone_1'=M_Bone_1, 'M_Bone_2'=M_Bone_2, 'M_Bone_3'=M_Bone_3, 'M_Bone_4'=M_Bone_4,
       'M_Brain_0'=M_Brain_0, 'M_Brain_1'=M_Brain_1, 'M_Brain_2'=M_Brain_2, 'M_Brain_3'=M_Brain_3, 'M_Brain_4'=M_Brain_4,
@@ -1141,12 +1137,6 @@ ode.func <- function(time, state, params, custom.func) {
     Cblven_2 = M_org_ven_2 / CardOutp # micromole/litre in venous blood from all organs
     Cblven_3 = M_org_ven_3 / CardOutp # micromole/litre in venous blood from all organs
     Cblven_4 = M_org_ven_4 / CardOutp # micromole/litre in venous blood from all organs
-    
-    # dM_Ven_0 = 0#FlowOrgAdip * C_Adip_0/R_Adip_ven_0 + FlowOrgBone * C_Bone_0/R_Bone_ven_0 + FlowOrgBrain * C_Brain_0/R_Brain_ven_0 + FlowOrgHeart * C_Heart_0/R_Heart_ven_0 + FlowOrgKidney * C_Kidney_0/R_Kidney_ven_0 + (FlowOrgIntestine + FlowOrgLiver) * C_Liver_0/R_Liver_ven_0 + FlowOrgMuscle * C_Muscle_0/R_Muscle_ven_0 + FlowOrgSkin * C_Skin_0/R_Skin_ven_0 + FlowOrgMarrow * C_Marrow_0/R_Marrow_ven_0 - FlowOrgLung * C_Lung_0/R_Lung_ven_0 
-    # dM_Ven_1 = 0#FlowOrgAdip * C_Adip_1/R_Adip_ven_1 + FlowOrgBone * C_Bone_1/R_Bone_ven_1 + FlowOrgBrain * C_Brain_1/R_Brain_ven_1 + FlowOrgHeart * C_Heart_1/R_Heart_ven_1 + FlowOrgKidney * C_Kidney_1/R_Kidney_ven_1 + (FlowOrgIntestine + FlowOrgLiver) * C_Liver_1/R_Liver_ven_1 + FlowOrgMuscle * C_Muscle_1/R_Muscle_ven_1 + FlowOrgSkin * C_Skin_1/R_Skin_ven_1 + FlowOrgMarrow * C_Marrow_1/R_Marrow_ven_1 - FlowOrgLung * C_Lung_1/R_Lung_ven_1 
-    # dM_Ven_2 = 0#FlowOrgAdip * C_Adip_2/R_Adip_ven_2 + FlowOrgBone * C_Bone_2/R_Bone_ven_2 + FlowOrgBrain * C_Brain_2/R_Brain_ven_2 + FlowOrgHeart * C_Heart_2/R_Heart_ven_2 + FlowOrgKidney * C_Kidney_2/R_Kidney_ven_2 + (FlowOrgIntestine + FlowOrgLiver) * C_Liver_2/R_Liver_ven_2 + FlowOrgMuscle * C_Muscle_2/R_Muscle_ven_2 + FlowOrgSkin * C_Skin_2/R_Skin_ven_2 + FlowOrgMarrow * C_Marrow_2/R_Marrow_ven_2 - FlowOrgLung * C_Lung_2/R_Lung_ven_2 
-    # dM_Ven_3 = 0#FlowOrgAdip * C_Adip_3/R_Adip_ven_3 + FlowOrgBone * C_Bone_3/R_Bone_ven_3 + FlowOrgBrain * C_Brain_3/R_Brain_ven_3 + FlowOrgHeart * C_Heart_3/R_Heart_ven_3 + FlowOrgKidney * C_Kidney_3/R_Kidney_ven_3 + (FlowOrgIntestine + FlowOrgLiver) * C_Liver_3/R_Liver_ven_3 + FlowOrgMuscle * C_Muscle_3/R_Muscle_ven_3 + FlowOrgSkin * C_Skin_3/R_Skin_ven_3 + FlowOrgMarrow * C_Marrow_3/R_Marrow_ven_3 - FlowOrgLung * C_Lung_3/R_Lung_ven_3 
-    # dM_Ven_4 = 0#FlowOrgAdip * C_Adip_4/R_Adip_ven_4 + FlowOrgBone * C_Bone_4/R_Bone_ven_4 + FlowOrgBrain * C_Brain_4/R_Brain_ven_4 + FlowOrgHeart * C_Heart_4/R_Heart_ven_4 + FlowOrgKidney * C_Kidney_4/R_Kidney_ven_4 + (FlowOrgIntestine + FlowOrgLiver) * C_Liver_4/R_Liver_ven_4 + FlowOrgMuscle * C_Muscle_4/R_Muscle_ven_4 + FlowOrgSkin * C_Skin_4/R_Skin_ven_4 + FlowOrgMarrow * C_Marrow_4/R_Marrow_ven_4 - FlowOrgLung * C_Lung_4/R_Lung_ven_4 
     
     dM_Adip_0 = FlowOrgAdip * (Cblart_0 - C_Adip_0/R_Adip_ven_0) - (Vmax_Adip_0 * VolCmpAdip * C_Adip_0)/(Km_Adip_0 + C_Adip_0)
     dM_Adip_1 = FlowOrgAdip * (Cblart_1 - C_Adip_1/R_Adip_ven_1) - (Vmax_Adip_1 * VolCmpAdip * C_Adip_1)/(Km_Adip_1 + C_Adip_1) + (Vmax_p_Adip_0 * VolCmpAdip * C_Adip_0)/(Km_Adip_0 + C_Adip_0)
@@ -1340,7 +1330,6 @@ ode.func <- function(time, state, params, custom.func) {
     
     # Return derivatives
     return(list(c(
-      # 'dM_Ven_0'=dM_Ven_0, 'dM_Ven_1'=dM_Ven_1, 'dM_Ven_2'=dM_Ven_2, 'dM_Ven_3'=dM_Ven_3, 'dM_Ven_4'=dM_Ven_4,
       "dM_Adip_0"=dM_Adip_0, "dM_Adip_1"=dM_Adip_1, "dM_Adip_2"=dM_Adip_2, "dM_Adip_3"=dM_Adip_3, "dM_Adip_4"=dM_Adip_4,
       "dM_Bone_0"=dM_Bone_0, "dM_Bone_1"=dM_Bone_1, "dM_Bone_2"=dM_Bone_2, "dM_Bone_3"=dM_Bone_3, "dM_Bone_4"=dM_Bone_4,
       "dM_Brain_0"=dM_Brain_0, "dM_Brain_1"=dM_Brain_1, "dM_Brain_2"=dM_Brain_2, "dM_Brain_3"=dM_Brain_3, "dM_Brain_4"=dM_Brain_4,
@@ -1541,7 +1530,7 @@ user_input = list(
   Vmax_p_Heart_0 = 0, Vmax_p_Heart_1 = 0, Vmax_p_Heart_2 = 0, Vmax_p_Heart_3 = 0, Vmax_p_Heart_4 = 0,
   Vmax_p_Kidney_0 = 0, Vmax_p_Kidney_1 = 0, Vmax_p_Kidney_2 = 0, Vmax_p_Kidney_3 = 0, Vmax_p_Kidney_4 = 0,
   Vmax_p_Intestine_0 = 0, Vmax_p_Intestine_1 = 0, Vmax_p_Intestine_2 = 0, Vmax_p_Intestine_3 = 0, Vmax_p_Intestine_4 = 0,
-  Vmax_p_Liver_0 = 500, Vmax_p_Liver_1 = 0, Vmax_p_Liver_2 = 0, Vmax_p_Liver_3 = 0, Vmax_p_Liver_4 = 0,
+  Vmax_p_Liver_0 = 1000, Vmax_p_Liver_1 = 300, Vmax_p_Liver_2 = 300, Vmax_p_Liver_3 = 0, Vmax_p_Liver_4 = 0,
   Vmax_p_Lung_0 = 0, Vmax_p_Lung_1 = 0, Vmax_p_Lung_2 = 0, Vmax_p_Lung_3 = 0, Vmax_p_Lung_4 = 0,
   Vmax_p_Muscle_0 = 0, Vmax_p_Muscle_1 = 0, Vmax_p_Muscle_2 = 0, Vmax_p_Muscle_3 = 0, Vmax_p_Muscle_4 = 0,
   Vmax_p_Skin_0 = 0, Vmax_p_Skin_1 = 0, Vmax_p_Skin_2 = 0, Vmax_p_Skin_3 = 0, Vmax_p_Skin_4 = 0,
@@ -1554,7 +1543,7 @@ user_input = list(
   Km_Heart_0 = 1, Km_Heart_1 = 1, Km_Heart_2 = 1, Km_Heart_3 = 1, Km_Heart_4 = 1,
   Km_Kidney_0 = 1, Km_Kidney_1 = 1, Km_Kidney_2 = 1, Km_Kidney_3 = 1, Km_Kidney_4 = 1,
   Km_Intestine_0 = 1, Km_Intestine_1 = 1, Km_Intestine_2 = 1, Km_Intestine_3 = 1, Km_Intestine_4 = 1,
-  Km_Liver_0 = 50, Km_Liver_1 = 1, Km_Liver_2 = 1, Km_Liver_3 = 1, Km_Liver_4 = 1,
+  Km_Liver_0 = 50, Km_Liver_1 = 50, Km_Liver_2 = 20, Km_Liver_3 = 1, Km_Liver_4 = 1,
   Km_Lung_0 = 1, Km_Lung_1 = 1, Km_Lung_2 = 1, Km_Lung_3 = 1, Km_Lung_4 = 1,
   Km_Muscle_0 = 1, Km_Muscle_1 = 1, Km_Muscle_2 = 1, Km_Muscle_3 = 1, Km_Muscle_4 = 1,
   Km_Skin_0 = 1, Km_Skin_1 = 1, Km_Skin_2 = 1, Km_Skin_3 = 1, Km_Skin_4 = 1,
