@@ -646,12 +646,16 @@ create.params <- function(user_input) {
       for(i in 0:4) {
         # Create parameter names
         vmax_name <- paste0("Vmax_", organ, "_", i)
-        Vmax_p_name <- paste0("Vmax_p_", organ, "_", i)
+        if(i != 0){
+          Vmax_p_name <- paste0("Vmax_p_", organ, "_", i)  
+        }
         km_name <- paste0("Km_", organ, "_", i)
         
         # Assign values from user_input to params
         params[[vmax_name]] <- user_input[[vmax_name]]
-        params[[Vmax_p_name]] <- user_input[[Vmax_p_name]]
+        if (i != 0){
+          params[[Vmax_p_name]] <- user_input[[Vmax_p_name]]
+        }
         params[[km_name]] <- user_input[[km_name]]
       }
     }
@@ -1139,47 +1143,47 @@ ode.func <- function(time, state, params, custom.func) {
     Cblven_4 = M_org_ven_4 / CardOutp # micromole/litre in venous blood from all organs
     
     dM_Adip_0 = FlowOrgAdip * (Cblart_0 - C_Adip_0/R_Adip_ven_0) - (Vmax_Adip_0 * VolCmpAdip * C_Adip_0)/(Km_Adip_0 + C_Adip_0)
-    dM_Adip_1 = FlowOrgAdip * (Cblart_1 - C_Adip_1/R_Adip_ven_1) - (Vmax_Adip_1 * VolCmpAdip * C_Adip_1)/(Km_Adip_1 + C_Adip_1) + (Vmax_p_Adip_0 * VolCmpAdip * C_Adip_0)/(Km_Adip_0 + C_Adip_0)
-    dM_Adip_2 = FlowOrgAdip * (Cblart_2 - C_Adip_2/R_Adip_ven_2) - (Vmax_Adip_2 * VolCmpAdip * C_Adip_2)/(Km_Adip_2 + C_Adip_2) + (Vmax_p_Adip_1 * VolCmpAdip * C_Adip_1)/(Km_Adip_1 + C_Adip_1)
-    dM_Adip_3 = FlowOrgAdip * (Cblart_3 - C_Adip_3/R_Adip_ven_3) - (Vmax_Adip_3 * VolCmpAdip * C_Adip_3)/(Km_Adip_3 + C_Adip_3) + (Vmax_p_Adip_2 * VolCmpAdip * C_Adip_2)/(Km_Adip_2 + C_Adip_2)
-    dM_Adip_4 = FlowOrgAdip * (Cblart_4 - C_Adip_4/R_Adip_ven_4) - (Vmax_Adip_4 * VolCmpAdip * C_Adip_4)/(Km_Adip_4 + C_Adip_4) + (Vmax_p_Adip_3 * VolCmpAdip * C_Adip_3)/(Km_Adip_3 + C_Adip_3)
+    dM_Adip_1 = FlowOrgAdip * (Cblart_1 - C_Adip_1/R_Adip_ven_1) - (Vmax_Adip_1 * VolCmpAdip * C_Adip_1)/(Km_Adip_1 + C_Adip_1) + (Vmax_p_Adip_1 * VolCmpAdip * C_Adip_0)/(Km_Adip_0 + C_Adip_0)
+    dM_Adip_2 = FlowOrgAdip * (Cblart_2 - C_Adip_2/R_Adip_ven_2) - (Vmax_Adip_2 * VolCmpAdip * C_Adip_2)/(Km_Adip_2 + C_Adip_2) + (Vmax_p_Adip_2 * VolCmpAdip * C_Adip_1)/(Km_Adip_1 + C_Adip_1)
+    dM_Adip_3 = FlowOrgAdip * (Cblart_3 - C_Adip_3/R_Adip_ven_3) - (Vmax_Adip_3 * VolCmpAdip * C_Adip_3)/(Km_Adip_3 + C_Adip_3) + (Vmax_p_Adip_3 * VolCmpAdip * C_Adip_2)/(Km_Adip_2 + C_Adip_2)
+    dM_Adip_4 = FlowOrgAdip * (Cblart_4 - C_Adip_4/R_Adip_ven_4) - (Vmax_Adip_4 * VolCmpAdip * C_Adip_4)/(Km_Adip_4 + C_Adip_4) + (Vmax_p_Adip_4 * VolCmpAdip * C_Adip_3)/(Km_Adip_3 + C_Adip_3)
     
     dM_Bone_0 = FlowOrgBone * (Cblart_0 - C_Bone_0/R_Bone_ven_0) - (Vmax_Bone_0 * VolCmpBone * C_Bone_0)/(Km_Bone_0 + C_Bone_0)
-    dM_Bone_1 = FlowOrgBone * (Cblart_1 - C_Bone_1/R_Bone_ven_1) - (Vmax_Bone_1 * VolCmpBone * C_Bone_1)/(Km_Bone_1 + C_Bone_1) + (Vmax_p_Bone_0 * VolCmpBone * C_Bone_0)/(Km_Bone_0 + C_Bone_0)
-    dM_Bone_2 = FlowOrgBone * (Cblart_2 - C_Bone_2/R_Bone_ven_2) - (Vmax_Bone_2 * VolCmpBone * C_Bone_2)/(Km_Bone_2 + C_Bone_2) + (Vmax_p_Bone_1 * VolCmpBone * C_Bone_1)/(Km_Bone_1 + C_Bone_1)
-    dM_Bone_3 = FlowOrgBone * (Cblart_3 - C_Bone_3/R_Bone_ven_3) - (Vmax_Bone_3 * VolCmpBone * C_Bone_3)/(Km_Bone_3 + C_Bone_3) + (Vmax_p_Bone_2 * VolCmpBone * C_Bone_2)/(Km_Bone_2 + C_Bone_2)
-    dM_Bone_4 = FlowOrgBone * (Cblart_4 - C_Bone_4/R_Bone_ven_4) - (Vmax_Bone_4 * VolCmpBone * C_Bone_4)/(Km_Bone_4 + C_Bone_4) + (Vmax_p_Bone_3 * VolCmpBone * C_Bone_3)/(Km_Bone_3 + C_Bone_3)
+    dM_Bone_1 = FlowOrgBone * (Cblart_1 - C_Bone_1/R_Bone_ven_1) - (Vmax_Bone_1 * VolCmpBone * C_Bone_1)/(Km_Bone_1 + C_Bone_1) + (Vmax_p_Bone_1 * VolCmpBone * C_Bone_0)/(Km_Bone_0 + C_Bone_0)
+    dM_Bone_2 = FlowOrgBone * (Cblart_2 - C_Bone_2/R_Bone_ven_2) - (Vmax_Bone_2 * VolCmpBone * C_Bone_2)/(Km_Bone_2 + C_Bone_2) + (Vmax_p_Bone_2 * VolCmpBone * C_Bone_1)/(Km_Bone_1 + C_Bone_1)
+    dM_Bone_3 = FlowOrgBone * (Cblart_3 - C_Bone_3/R_Bone_ven_3) - (Vmax_Bone_3 * VolCmpBone * C_Bone_3)/(Km_Bone_3 + C_Bone_3) + (Vmax_p_Bone_3 * VolCmpBone * C_Bone_2)/(Km_Bone_2 + C_Bone_2)
+    dM_Bone_4 = FlowOrgBone * (Cblart_4 - C_Bone_4/R_Bone_ven_4) - (Vmax_Bone_4 * VolCmpBone * C_Bone_4)/(Km_Bone_4 + C_Bone_4) + (Vmax_p_Bone_4 * VolCmpBone * C_Bone_3)/(Km_Bone_3 + C_Bone_3)
     
     dM_Brain_0 = FlowOrgBrain * (Cblart_0 - C_Brain_0/R_Brain_ven_0) - (Vmax_Brain_0 * VolCmpBrain * C_Brain_0)/(Km_Brain_0 + C_Brain_0)
-    dM_Brain_1 = FlowOrgBrain * (Cblart_1 - C_Brain_1/R_Brain_ven_1) - (Vmax_Brain_1 * VolCmpBrain * C_Brain_1)/(Km_Brain_1 + C_Brain_1) + (Vmax_p_Brain_0 * VolCmpBrain * C_Brain_0)/(Km_Brain_0 + C_Brain_0)
-    dM_Brain_2 = FlowOrgBrain * (Cblart_2 - C_Brain_2/R_Brain_ven_2) - (Vmax_Brain_2 * VolCmpBrain * C_Brain_2)/(Km_Brain_2 + C_Brain_2) + (Vmax_p_Brain_1 * VolCmpBrain * C_Brain_1)/(Km_Brain_1 + C_Brain_1)
-    dM_Brain_3 = FlowOrgBrain * (Cblart_3 - C_Brain_3/R_Brain_ven_3) - (Vmax_Brain_3 * VolCmpBrain * C_Brain_3)/(Km_Brain_3 + C_Brain_3) + (Vmax_p_Brain_2 * VolCmpBrain * C_Brain_2)/(Km_Brain_2 + C_Brain_2)
-    dM_Brain_4 = FlowOrgBrain * (Cblart_4 - C_Brain_4/R_Brain_ven_4) - (Vmax_Brain_4 * VolCmpBrain * C_Brain_4)/(Km_Brain_4 + C_Brain_4) + (Vmax_p_Brain_3 * VolCmpBrain * C_Brain_3)/(Km_Brain_3 + C_Brain_3)
+    dM_Brain_1 = FlowOrgBrain * (Cblart_1 - C_Brain_1/R_Brain_ven_1) - (Vmax_Brain_1 * VolCmpBrain * C_Brain_1)/(Km_Brain_1 + C_Brain_1) + (Vmax_p_Brain_1 * VolCmpBrain * C_Brain_0)/(Km_Brain_0 + C_Brain_0)
+    dM_Brain_2 = FlowOrgBrain * (Cblart_2 - C_Brain_2/R_Brain_ven_2) - (Vmax_Brain_2 * VolCmpBrain * C_Brain_2)/(Km_Brain_2 + C_Brain_2) + (Vmax_p_Brain_2 * VolCmpBrain * C_Brain_1)/(Km_Brain_1 + C_Brain_1)
+    dM_Brain_3 = FlowOrgBrain * (Cblart_3 - C_Brain_3/R_Brain_ven_3) - (Vmax_Brain_3 * VolCmpBrain * C_Brain_3)/(Km_Brain_3 + C_Brain_3) + (Vmax_p_Brain_3 * VolCmpBrain * C_Brain_2)/(Km_Brain_2 + C_Brain_2)
+    dM_Brain_4 = FlowOrgBrain * (Cblart_4 - C_Brain_4/R_Brain_ven_4) - (Vmax_Brain_4 * VolCmpBrain * C_Brain_4)/(Km_Brain_4 + C_Brain_4) + (Vmax_p_Brain_4 * VolCmpBrain * C_Brain_3)/(Km_Brain_3 + C_Brain_3)
     
     dM_Heart_0 = FlowOrgHeart * (Cblart_0 - C_Heart_0/R_Heart_ven_0) - (Vmax_Heart_0 * VolCmpHeart * C_Heart_0)/(Km_Heart_0 + C_Heart_0)
-    dM_Heart_1 = FlowOrgHeart * (Cblart_1 - C_Heart_1/R_Heart_ven_1) - (Vmax_Heart_1 * VolCmpHeart * C_Heart_1)/(Km_Heart_1 + C_Heart_1) + (Vmax_p_Heart_0 * VolCmpHeart * C_Heart_0)/(Km_Heart_0 + C_Heart_0)
-    dM_Heart_2 = FlowOrgHeart * (Cblart_2 - C_Heart_2/R_Heart_ven_2) - (Vmax_Heart_2 * VolCmpHeart * C_Heart_2)/(Km_Heart_2 + C_Heart_2) + (Vmax_p_Heart_1 * VolCmpHeart * C_Heart_1)/(Km_Heart_1 + C_Heart_1)
-    dM_Heart_3 = FlowOrgHeart * (Cblart_3 - C_Heart_3/R_Heart_ven_3) - (Vmax_Heart_3 * VolCmpHeart * C_Heart_3)/(Km_Heart_3 + C_Heart_3) + (Vmax_p_Heart_2 * VolCmpHeart * C_Heart_2)/(Km_Heart_2 + C_Heart_2)
-    dM_Heart_4 = FlowOrgHeart * (Cblart_4 - C_Heart_4/R_Heart_ven_4) - (Vmax_Heart_4 * VolCmpHeart * C_Heart_4)/(Km_Heart_4 + C_Heart_4) + (Vmax_p_Heart_3 * VolCmpHeart * C_Heart_3)/(Km_Heart_3 + C_Heart_3)
+    dM_Heart_1 = FlowOrgHeart * (Cblart_1 - C_Heart_1/R_Heart_ven_1) - (Vmax_Heart_1 * VolCmpHeart * C_Heart_1)/(Km_Heart_1 + C_Heart_1) + (Vmax_p_Heart_1 * VolCmpHeart * C_Heart_0)/(Km_Heart_0 + C_Heart_0)
+    dM_Heart_2 = FlowOrgHeart * (Cblart_2 - C_Heart_2/R_Heart_ven_2) - (Vmax_Heart_2 * VolCmpHeart * C_Heart_2)/(Km_Heart_2 + C_Heart_2) + (Vmax_p_Heart_2 * VolCmpHeart * C_Heart_1)/(Km_Heart_1 + C_Heart_1)
+    dM_Heart_3 = FlowOrgHeart * (Cblart_3 - C_Heart_3/R_Heart_ven_3) - (Vmax_Heart_3 * VolCmpHeart * C_Heart_3)/(Km_Heart_3 + C_Heart_3) + (Vmax_p_Heart_3 * VolCmpHeart * C_Heart_2)/(Km_Heart_2 + C_Heart_2)
+    dM_Heart_4 = FlowOrgHeart * (Cblart_4 - C_Heart_4/R_Heart_ven_4) - (Vmax_Heart_4 * VolCmpHeart * C_Heart_4)/(Km_Heart_4 + C_Heart_4) + (Vmax_p_Heart_4 * VolCmpHeart * C_Heart_3)/(Km_Heart_3 + C_Heart_3)
     
     dM_Muscle_0 = FlowOrgMuscle * (Cblart_0 - C_Muscle_0/R_Muscle_ven_0) - (Vmax_Muscle_0 * VolCmpMuscle * C_Muscle_0)/(Km_Muscle_0 + C_Muscle_0)
-    dM_Muscle_1 = FlowOrgMuscle * (Cblart_1 - C_Muscle_1/R_Muscle_ven_1) - (Vmax_Muscle_1 * VolCmpMuscle * C_Muscle_1)/(Km_Muscle_1 + C_Muscle_1) + (Vmax_p_Muscle_0 * VolCmpMuscle * C_Muscle_0)/(Km_Muscle_0 + C_Muscle_0)
-    dM_Muscle_2 = FlowOrgMuscle * (Cblart_2 - C_Muscle_2/R_Muscle_ven_2) - (Vmax_Muscle_2 * VolCmpMuscle * C_Muscle_2)/(Km_Muscle_2 + C_Muscle_2) + (Vmax_p_Muscle_1 * VolCmpMuscle * C_Muscle_1)/(Km_Muscle_1 + C_Muscle_1)
-    dM_Muscle_3 = FlowOrgMuscle * (Cblart_3 - C_Muscle_3/R_Muscle_ven_3) - (Vmax_Muscle_3 * VolCmpMuscle * C_Muscle_3)/(Km_Muscle_3 + C_Muscle_3) + (Vmax_p_Muscle_2 * VolCmpMuscle * C_Muscle_2)/(Km_Muscle_2 + C_Muscle_2)
-    dM_Muscle_4 = FlowOrgMuscle * (Cblart_4 - C_Muscle_4/R_Muscle_ven_4) - (Vmax_Muscle_4 * VolCmpMuscle * C_Muscle_4)/(Km_Muscle_4 + C_Muscle_4) + (Vmax_p_Muscle_3 * VolCmpMuscle * C_Muscle_3)/(Km_Muscle_3 + C_Muscle_3)
+    dM_Muscle_1 = FlowOrgMuscle * (Cblart_1 - C_Muscle_1/R_Muscle_ven_1) - (Vmax_Muscle_1 * VolCmpMuscle * C_Muscle_1)/(Km_Muscle_1 + C_Muscle_1) + (Vmax_p_Muscle_1 * VolCmpMuscle * C_Muscle_0)/(Km_Muscle_0 + C_Muscle_0)
+    dM_Muscle_2 = FlowOrgMuscle * (Cblart_2 - C_Muscle_2/R_Muscle_ven_2) - (Vmax_Muscle_2 * VolCmpMuscle * C_Muscle_2)/(Km_Muscle_2 + C_Muscle_2) + (Vmax_p_Muscle_2 * VolCmpMuscle * C_Muscle_1)/(Km_Muscle_1 + C_Muscle_1)
+    dM_Muscle_3 = FlowOrgMuscle * (Cblart_3 - C_Muscle_3/R_Muscle_ven_3) - (Vmax_Muscle_3 * VolCmpMuscle * C_Muscle_3)/(Km_Muscle_3 + C_Muscle_3) + (Vmax_p_Muscle_3 * VolCmpMuscle * C_Muscle_2)/(Km_Muscle_2 + C_Muscle_2)
+    dM_Muscle_4 = FlowOrgMuscle * (Cblart_4 - C_Muscle_4/R_Muscle_ven_4) - (Vmax_Muscle_4 * VolCmpMuscle * C_Muscle_4)/(Km_Muscle_4 + C_Muscle_4) + (Vmax_p_Muscle_4 * VolCmpMuscle * C_Muscle_3)/(Km_Muscle_3 + C_Muscle_3)
     
     dM_Marrow_0 = FlowOrgMarrow * (Cblart_0 - C_Marrow_0/R_Marrow_ven_0) - (Vmax_Marrow_0 * VolCmpMarrow * C_Marrow_0)/(Km_Marrow_0 + C_Marrow_0)
-    dM_Marrow_1 = FlowOrgMarrow * (Cblart_1 - C_Marrow_1/R_Marrow_ven_1) - (Vmax_Marrow_1 * VolCmpMarrow * C_Marrow_1)/(Km_Marrow_1 + C_Marrow_1) + (Vmax_p_Marrow_0 * VolCmpMarrow * C_Marrow_0)/(Km_Marrow_0 + C_Marrow_0)
-    dM_Marrow_2 = FlowOrgMarrow * (Cblart_2 - C_Marrow_2/R_Marrow_ven_2) - (Vmax_Marrow_2 * VolCmpMarrow * C_Marrow_2)/(Km_Marrow_2 + C_Marrow_2) + (Vmax_p_Marrow_1 * VolCmpMarrow * C_Marrow_1)/(Km_Marrow_1 + C_Marrow_1)
-    dM_Marrow_3 = FlowOrgMarrow * (Cblart_3 - C_Marrow_3/R_Marrow_ven_3) - (Vmax_Marrow_3 * VolCmpMarrow * C_Marrow_3)/(Km_Marrow_3 + C_Marrow_3) + (Vmax_p_Marrow_2 * VolCmpMarrow * C_Marrow_2)/(Km_Marrow_2 + C_Marrow_2)
-    dM_Marrow_4 = FlowOrgMarrow * (Cblart_4 - C_Marrow_4/R_Marrow_ven_4) - (Vmax_Marrow_4 * VolCmpMarrow * C_Marrow_4)/(Km_Marrow_4 + C_Marrow_4) + (Vmax_p_Marrow_3 * VolCmpMarrow * C_Marrow_3)/(Km_Marrow_3 + C_Marrow_3)
+    dM_Marrow_1 = FlowOrgMarrow * (Cblart_1 - C_Marrow_1/R_Marrow_ven_1) - (Vmax_Marrow_1 * VolCmpMarrow * C_Marrow_1)/(Km_Marrow_1 + C_Marrow_1) + (Vmax_p_Marrow_1 * VolCmpMarrow * C_Marrow_0)/(Km_Marrow_0 + C_Marrow_0)
+    dM_Marrow_2 = FlowOrgMarrow * (Cblart_2 - C_Marrow_2/R_Marrow_ven_2) - (Vmax_Marrow_2 * VolCmpMarrow * C_Marrow_2)/(Km_Marrow_2 + C_Marrow_2) + (Vmax_p_Marrow_2 * VolCmpMarrow * C_Marrow_1)/(Km_Marrow_1 + C_Marrow_1)
+    dM_Marrow_3 = FlowOrgMarrow * (Cblart_3 - C_Marrow_3/R_Marrow_ven_3) - (Vmax_Marrow_3 * VolCmpMarrow * C_Marrow_3)/(Km_Marrow_3 + C_Marrow_3) + (Vmax_p_Marrow_3 * VolCmpMarrow * C_Marrow_2)/(Km_Marrow_2 + C_Marrow_2)
+    dM_Marrow_4 = FlowOrgMarrow * (Cblart_4 - C_Marrow_4/R_Marrow_ven_4) - (Vmax_Marrow_4 * VolCmpMarrow * C_Marrow_4)/(Km_Marrow_4 + C_Marrow_4) + (Vmax_p_Marrow_4 * VolCmpMarrow * C_Marrow_3)/(Km_Marrow_3 + C_Marrow_3)
     
     # Kidney 
     dM_Kidney_0 = FlowOrgKidney * (Cblart_0 - C_Kidney_0/R_Kidney_ven_0) - (Vmax_Kidney_0 * VolCmpKidney * C_Kidney_0)/(Km_Kidney_0 + C_Kidney_0) - GlomFiltr * RemovKdn_0 * FlowOrgKidney * Cblart_0 * FrWsol_0 # micromole/hour
-    dM_Kidney_1 = FlowOrgKidney * (Cblart_1 - C_Kidney_1/R_Kidney_ven_1) - (Vmax_Kidney_1 * VolCmpKidney * C_Kidney_1)/(Km_Kidney_1 + C_Kidney_1) + (Vmax_p_Kidney_0 * VolCmpKidney * C_Kidney_0)/(Km_Kidney_0 + C_Kidney_0) - GlomFiltr * RemovKdn_1 * FlowOrgKidney * Cblart_1 * FrWsol_1 # micromole/hour 
-    dM_Kidney_2 = FlowOrgKidney * (Cblart_2 - C_Kidney_2/R_Kidney_ven_2) - (Vmax_Kidney_2 * VolCmpKidney * C_Kidney_2)/(Km_Kidney_2 + C_Kidney_2) + (Vmax_p_Kidney_1 * VolCmpKidney * C_Kidney_1)/(Km_Kidney_1 + C_Kidney_1) - GlomFiltr * RemovKdn_2 * FlowOrgKidney * Cblart_2 * FrWsol_2 # micromole/hour 
-    dM_Kidney_3 = FlowOrgKidney * (Cblart_3 - C_Kidney_3/R_Kidney_ven_3) - (Vmax_Kidney_3 * VolCmpKidney * C_Kidney_3)/(Km_Kidney_3 + C_Kidney_3) + (Vmax_p_Kidney_2 * VolCmpKidney * C_Kidney_2)/(Km_Kidney_2 + C_Kidney_2) - GlomFiltr * RemovKdn_3 * FlowOrgKidney * Cblart_3 * FrWsol_3 # micromole/hour 
-    dM_Kidney_4 = FlowOrgKidney * (Cblart_4 - C_Kidney_4/R_Kidney_ven_4) - (Vmax_Kidney_4 * VolCmpKidney * C_Kidney_4)/(Km_Kidney_4 + C_Kidney_4) + (Vmax_p_Kidney_3 * VolCmpKidney * C_Kidney_3)/(Km_Kidney_3 + C_Kidney_3) - GlomFiltr * RemovKdn_4 * FlowOrgKidney * Cblart_4 * FrWsol_4 # micromole/hour 
+    dM_Kidney_1 = FlowOrgKidney * (Cblart_1 - C_Kidney_1/R_Kidney_ven_1) - (Vmax_Kidney_1 * VolCmpKidney * C_Kidney_1)/(Km_Kidney_1 + C_Kidney_1) + (Vmax_p_Kidney_1 * VolCmpKidney * C_Kidney_0)/(Km_Kidney_0 + C_Kidney_0) - GlomFiltr * RemovKdn_1 * FlowOrgKidney * Cblart_1 * FrWsol_1 # micromole/hour 
+    dM_Kidney_2 = FlowOrgKidney * (Cblart_2 - C_Kidney_2/R_Kidney_ven_2) - (Vmax_Kidney_2 * VolCmpKidney * C_Kidney_2)/(Km_Kidney_2 + C_Kidney_2) + (Vmax_p_Kidney_2 * VolCmpKidney * C_Kidney_1)/(Km_Kidney_1 + C_Kidney_1) - GlomFiltr * RemovKdn_2 * FlowOrgKidney * Cblart_2 * FrWsol_2 # micromole/hour 
+    dM_Kidney_3 = FlowOrgKidney * (Cblart_3 - C_Kidney_3/R_Kidney_ven_3) - (Vmax_Kidney_3 * VolCmpKidney * C_Kidney_3)/(Km_Kidney_3 + C_Kidney_3) + (Vmax_p_Kidney_3 * VolCmpKidney * C_Kidney_2)/(Km_Kidney_2 + C_Kidney_2) - GlomFiltr * RemovKdn_3 * FlowOrgKidney * Cblart_3 * FrWsol_3 # micromole/hour 
+    dM_Kidney_4 = FlowOrgKidney * (Cblart_4 - C_Kidney_4/R_Kidney_ven_4) - (Vmax_Kidney_4 * VolCmpKidney * C_Kidney_4)/(Km_Kidney_4 + C_Kidney_4) + (Vmax_p_Kidney_4 * VolCmpKidney * C_Kidney_3)/(Km_Kidney_3 + C_Kidney_3) - GlomFiltr * RemovKdn_4 * FlowOrgKidney * Cblart_4 * FrWsol_4 # micromole/hour 
     
     dUrinExcr_0 = GlomFiltr * RemovKdn_0 * FlowOrgKidney * Cblart_0 * FrWsol_0 # micromole/hour 
     dUrinExcr_1 = GlomFiltr * RemovKdn_1 * FlowOrgKidney * Cblart_1 * FrWsol_1 # micromole/hour
@@ -1199,17 +1203,17 @@ ode.func <- function(time, state, params, custom.func) {
     dM_IntCav_4 = EntHepRt_4 * M_Liver_4 - 0.3 * M_IntCav_4 #micromole/hour
     
     dM_Intestine_0 = FlowOrgIntestine * (Cblart_0 - C_Intestine_0/R_Intestine_ven_0) - (Vmax_Intestine_0 * VolCmpIntestine * C_Intestine_0)/(Km_Intestine_0 + C_Intestine_0) + 0.3 * M_IntCav_0 + DecrBolusRt * BolusDose
-    dM_Intestine_1 = FlowOrgIntestine * (Cblart_1 - C_Intestine_1/R_Intestine_ven_1) - (Vmax_Intestine_1 * VolCmpIntestine * C_Intestine_1)/(Km_Intestine_1 + C_Intestine_1) + (Vmax_p_Intestine_0 * VolCmpIntestine * C_Intestine_0)/(Km_Intestine_0 + C_Intestine_0) + 0.3 * M_IntCav_1
-    dM_Intestine_2 = FlowOrgIntestine * (Cblart_2 - C_Intestine_2/R_Intestine_ven_2) - (Vmax_Intestine_2 * VolCmpIntestine * C_Intestine_2)/(Km_Intestine_2 + C_Intestine_2) + (Vmax_p_Intestine_1 * VolCmpIntestine * C_Intestine_1)/(Km_Intestine_1 + C_Intestine_1) + 0.3 * M_IntCav_2
-    dM_Intestine_3 = FlowOrgIntestine * (Cblart_3 - C_Intestine_3/R_Intestine_ven_3) - (Vmax_Intestine_3 * VolCmpIntestine * C_Intestine_3)/(Km_Intestine_3 + C_Intestine_3) + (Vmax_p_Intestine_2 * VolCmpIntestine * C_Intestine_2)/(Km_Intestine_2 + C_Intestine_2) + 0.3 * M_IntCav_3
-    dM_Intestine_4 = FlowOrgIntestine * (Cblart_4 - C_Intestine_4/R_Intestine_ven_4) - (Vmax_Intestine_4 * VolCmpIntestine * C_Intestine_4)/(Km_Intestine_4 + C_Intestine_4) + (Vmax_p_Intestine_3 * VolCmpIntestine * C_Intestine_3)/(Km_Intestine_3 + C_Intestine_3) + 0.3 * M_IntCav_4
+    dM_Intestine_1 = FlowOrgIntestine * (Cblart_1 - C_Intestine_1/R_Intestine_ven_1) - (Vmax_Intestine_1 * VolCmpIntestine * C_Intestine_1)/(Km_Intestine_1 + C_Intestine_1) + (Vmax_p_Intestine_1 * VolCmpIntestine * C_Intestine_0)/(Km_Intestine_0 + C_Intestine_0) + 0.3 * M_IntCav_1
+    dM_Intestine_2 = FlowOrgIntestine * (Cblart_2 - C_Intestine_2/R_Intestine_ven_2) - (Vmax_Intestine_2 * VolCmpIntestine * C_Intestine_2)/(Km_Intestine_2 + C_Intestine_2) + (Vmax_p_Intestine_2 * VolCmpIntestine * C_Intestine_1)/(Km_Intestine_1 + C_Intestine_1) + 0.3 * M_IntCav_2
+    dM_Intestine_3 = FlowOrgIntestine * (Cblart_3 - C_Intestine_3/R_Intestine_ven_3) - (Vmax_Intestine_3 * VolCmpIntestine * C_Intestine_3)/(Km_Intestine_3 + C_Intestine_3) + (Vmax_p_Intestine_3 * VolCmpIntestine * C_Intestine_2)/(Km_Intestine_2 + C_Intestine_2) + 0.3 * M_IntCav_3
+    dM_Intestine_4 = FlowOrgIntestine * (Cblart_4 - C_Intestine_4/R_Intestine_ven_4) - (Vmax_Intestine_4 * VolCmpIntestine * C_Intestine_4)/(Km_Intestine_4 + C_Intestine_4) + (Vmax_p_Intestine_4 * VolCmpIntestine * C_Intestine_3)/(Km_Intestine_3 + C_Intestine_3) + 0.3 * M_IntCav_4
     
     # Liver
     dM_Liver_0 = FlowOrgLivArt * (Cblart_0 - C_Liver_0/R_Liver_ven_0) - (Vmax_Liver_0 * VolCmpLiver * C_Liver_0)/(Km_Liver_0 + C_Liver_0) + FlowOrgIntestine * C_Intestine_0/R_Intestine_ven_0 - FlowOrgIntestine * C_Liver_0 / R_Liver_ven_0 - EntHepRt_0 * M_Liver_0
-    dM_Liver_1 = FlowOrgLivArt * (Cblart_1 - C_Liver_1/R_Liver_ven_1) - (Vmax_Liver_1 * VolCmpLiver * C_Liver_1)/(Km_Liver_1 + C_Liver_1) + (Vmax_p_Liver_0 * VolCmpLiver * C_Liver_0)/(Km_Liver_0 + C_Liver_0) + FlowOrgIntestine * C_Intestine_1 / R_Intestine_ven_1 - FlowOrgIntestine * C_Liver_1 / R_Liver_ven_1 - EntHepRt_1 * M_Liver_1
-    dM_Liver_2 = FlowOrgLivArt * (Cblart_2 - C_Liver_2/R_Liver_ven_2) - (Vmax_Liver_2 * VolCmpLiver * C_Liver_2)/(Km_Liver_2 + C_Liver_2) + (Vmax_p_Liver_1 * VolCmpLiver * C_Liver_1)/(Km_Liver_1 + C_Liver_1) + FlowOrgIntestine * C_Intestine_2 / R_Intestine_ven_2 - FlowOrgIntestine * C_Liver_2 / R_Liver_ven_2 - EntHepRt_2 * M_Liver_2
-    dM_Liver_3 = FlowOrgLivArt * (Cblart_3 - C_Liver_3/R_Liver_ven_3) - (Vmax_Liver_3 * VolCmpLiver * C_Liver_3)/(Km_Liver_3 + C_Liver_3) + (Vmax_p_Liver_2 * VolCmpLiver * C_Liver_2)/(Km_Liver_2 + C_Liver_2) + FlowOrgIntestine * C_Intestine_3 / R_Intestine_ven_3 - FlowOrgIntestine * C_Liver_3 / R_Liver_ven_3 - EntHepRt_3 * M_Liver_3
-    dM_Liver_4 = FlowOrgLivArt * (Cblart_4 - C_Liver_4/R_Liver_ven_4) - (Vmax_Liver_4 * VolCmpLiver * C_Liver_4)/(Km_Liver_4 + C_Liver_4) + (Vmax_p_Liver_3 * VolCmpLiver * C_Liver_3)/(Km_Liver_3 + C_Liver_3) + FlowOrgIntestine * C_Intestine_4 / R_Intestine_ven_4 - FlowOrgIntestine * C_Liver_4 / R_Liver_ven_4 - EntHepRt_4 * M_Liver_4
+    dM_Liver_1 = FlowOrgLivArt * (Cblart_1 - C_Liver_1/R_Liver_ven_1) - (Vmax_Liver_1 * VolCmpLiver * C_Liver_1)/(Km_Liver_1 + C_Liver_1) + (Vmax_p_Liver_1 * VolCmpLiver * C_Liver_0)/(Km_Liver_0 + C_Liver_0) + FlowOrgIntestine * C_Intestine_1 / R_Intestine_ven_1 - FlowOrgIntestine * C_Liver_1 / R_Liver_ven_1 - EntHepRt_1 * M_Liver_1
+    dM_Liver_2 = FlowOrgLivArt * (Cblart_2 - C_Liver_2/R_Liver_ven_2) - (Vmax_Liver_2 * VolCmpLiver * C_Liver_2)/(Km_Liver_2 + C_Liver_2) + (Vmax_p_Liver_2 * VolCmpLiver * C_Liver_1)/(Km_Liver_1 + C_Liver_1) + FlowOrgIntestine * C_Intestine_2 / R_Intestine_ven_2 - FlowOrgIntestine * C_Liver_2 / R_Liver_ven_2 - EntHepRt_2 * M_Liver_2
+    dM_Liver_3 = FlowOrgLivArt * (Cblart_3 - C_Liver_3/R_Liver_ven_3) - (Vmax_Liver_3 * VolCmpLiver * C_Liver_3)/(Km_Liver_3 + C_Liver_3) + (Vmax_p_Liver_3 * VolCmpLiver * C_Liver_2)/(Km_Liver_2 + C_Liver_2) + FlowOrgIntestine * C_Intestine_3 / R_Intestine_ven_3 - FlowOrgIntestine * C_Liver_3 / R_Liver_ven_3 - EntHepRt_3 * M_Liver_3
+    dM_Liver_4 = FlowOrgLivArt * (Cblart_4 - C_Liver_4/R_Liver_ven_4) - (Vmax_Liver_4 * VolCmpLiver * C_Liver_4)/(Km_Liver_4 + C_Liver_4) + (Vmax_p_Liver_4 * VolCmpLiver * C_Liver_3)/(Km_Liver_3 + C_Liver_3) + FlowOrgIntestine * C_Intestine_4 / R_Intestine_ven_4 - FlowOrgIntestine * C_Liver_4 / R_Liver_ven_4 - EntHepRt_4 * M_Liver_4
     
     # Skin
     # Dermal absorption
@@ -1278,16 +1282,16 @@ ode.func <- function(time, state, params, custom.func) {
     dSum_Skin_Liq = SkinFlux_0 / BodyWt
     dSum_Skin_Air = DermFact * AmntDermAir_0 / BodyWt
     dM_Skin_0 = FlowOrgSkin * (Cblart_0 - C_Skin_0/R_Skin_ven_0) + SkinFlux_0 + DermFact * AmntDermAir_0 - (Vmax_Skin_0 * VolCmpSkin * C_Skin_0)/(Km_Skin_0 + C_Skin_0)
-    dM_Skin_1 = FlowOrgSkin * (Cblart_1 - C_Skin_1/R_Skin_ven_1) - (Vmax_Skin_1 * VolCmpSkin * C_Skin_1)/(Km_Skin_1 + C_Skin_1) + (Vmax_p_Skin_0 * VolCmpSkin * C_Skin_0)/(Km_Skin_0 + C_Skin_0)
-    dM_Skin_2 = FlowOrgSkin * (Cblart_2 - C_Skin_2/R_Skin_ven_2) - (Vmax_Skin_2 * VolCmpSkin * C_Skin_2)/(Km_Skin_2 + C_Skin_2) + (Vmax_p_Skin_1 * VolCmpSkin * C_Skin_1)/(Km_Skin_1 + C_Skin_1)
-    dM_Skin_3 = FlowOrgSkin * (Cblart_3 - C_Skin_3/R_Skin_ven_3) - (Vmax_Skin_3 * VolCmpSkin * C_Skin_3)/(Km_Skin_3 + C_Skin_3) + (Vmax_p_Skin_2 * VolCmpSkin * C_Skin_2)/(Km_Skin_2 + C_Skin_2)
-    dM_Skin_4 = FlowOrgSkin * (Cblart_4 - C_Skin_4/R_Skin_ven_4) - (Vmax_Skin_4 * VolCmpSkin * C_Skin_4)/(Km_Skin_4 + C_Skin_4) + (Vmax_p_Skin_3 * VolCmpSkin * C_Skin_3)/(Km_Skin_3 + C_Skin_3)
+    dM_Skin_1 = FlowOrgSkin * (Cblart_1 - C_Skin_1/R_Skin_ven_1) - (Vmax_Skin_1 * VolCmpSkin * C_Skin_1)/(Km_Skin_1 + C_Skin_1) + (Vmax_p_Skin_1 * VolCmpSkin * C_Skin_0)/(Km_Skin_0 + C_Skin_0)
+    dM_Skin_2 = FlowOrgSkin * (Cblart_2 - C_Skin_2/R_Skin_ven_2) - (Vmax_Skin_2 * VolCmpSkin * C_Skin_2)/(Km_Skin_2 + C_Skin_2) + (Vmax_p_Skin_2 * VolCmpSkin * C_Skin_1)/(Km_Skin_1 + C_Skin_1)
+    dM_Skin_3 = FlowOrgSkin * (Cblart_3 - C_Skin_3/R_Skin_ven_3) - (Vmax_Skin_3 * VolCmpSkin * C_Skin_3)/(Km_Skin_3 + C_Skin_3) + (Vmax_p_Skin_3 * VolCmpSkin * C_Skin_2)/(Km_Skin_2 + C_Skin_2)
+    dM_Skin_4 = FlowOrgSkin * (Cblart_4 - C_Skin_4/R_Skin_ven_4) - (Vmax_Skin_4 * VolCmpSkin * C_Skin_4)/(Km_Skin_4 + C_Skin_4) + (Vmax_p_Skin_4 * VolCmpSkin * C_Skin_3)/(Km_Skin_3 + C_Skin_3)
     
     dM_Lung_0 = FlowOrgLung * (Cblart_0 - C_Lung_0/R_Lung_ven_0) - (Vmax_Lung_0 * VolCmpLung * C_Lung_0)/(Km_Lung_0 + C_Lung_0)
-    dM_Lung_1 = FlowOrgLung * (Cblart_1 - C_Lung_1/R_Lung_ven_1) - (Vmax_Lung_1 * VolCmpLung * C_Lung_1)/(Km_Lung_1 + C_Lung_1) + (Vmax_p_Lung_0 * VolCmpLung * C_Lung_0)/(Km_Lung_0 + C_Lung_0)
-    dM_Lung_2 = FlowOrgLung * (Cblart_2 - C_Lung_2/R_Lung_ven_2) - (Vmax_Lung_2 * VolCmpLung * C_Lung_2)/(Km_Lung_2 + C_Lung_2) + (Vmax_p_Lung_1 * VolCmpLung * C_Lung_1)/(Km_Lung_1 + C_Lung_1)
-    dM_Lung_3 = FlowOrgLung * (Cblart_3 - C_Lung_3/R_Lung_ven_3) - (Vmax_Lung_3 * VolCmpLung * C_Lung_3)/(Km_Lung_3 + C_Lung_3) + (Vmax_p_Lung_2 * VolCmpLung * C_Lung_2)/(Km_Lung_2 + C_Lung_2)
-    dM_Lung_4 = FlowOrgLung * (Cblart_4 - C_Lung_4/R_Lung_ven_4) - (Vmax_Lung_4 * VolCmpLung * C_Lung_4)/(Km_Lung_4 + C_Lung_4) + (Vmax_p_Lung_3 * VolCmpLung * C_Lung_3)/(Km_Lung_3 + C_Lung_3)
+    dM_Lung_1 = FlowOrgLung * (Cblart_1 - C_Lung_1/R_Lung_ven_1) - (Vmax_Lung_1 * VolCmpLung * C_Lung_1)/(Km_Lung_1 + C_Lung_1) + (Vmax_p_Lung_1 * VolCmpLung * C_Lung_0)/(Km_Lung_0 + C_Lung_0)
+    dM_Lung_2 = FlowOrgLung * (Cblart_2 - C_Lung_2/R_Lung_ven_2) - (Vmax_Lung_2 * VolCmpLung * C_Lung_2)/(Km_Lung_2 + C_Lung_2) + (Vmax_p_Lung_2 * VolCmpLung * C_Lung_1)/(Km_Lung_1 + C_Lung_1)
+    dM_Lung_3 = FlowOrgLung * (Cblart_3 - C_Lung_3/R_Lung_ven_3) - (Vmax_Lung_3 * VolCmpLung * C_Lung_3)/(Km_Lung_3 + C_Lung_3) + (Vmax_p_Lung_3 * VolCmpLung * C_Lung_2)/(Km_Lung_2 + C_Lung_2)
+    dM_Lung_4 = FlowOrgLung * (Cblart_4 - C_Lung_4/R_Lung_ven_4) - (Vmax_Lung_4 * VolCmpLung * C_Lung_4)/(Km_Lung_4 + C_Lung_4) + (Vmax_p_Lung_4 * VolCmpLung * C_Lung_3)/(Km_Lung_3 + C_Lung_3)
     
     dM_LungArt_0 = CardOutp * (C_BlungArt_0 - Cblart_0)
     dM_LungArt_1 = CardOutp * (C_BlungArt_1 - Cblart_1)
@@ -1524,17 +1528,17 @@ user_input = list(
   Vmax_Skin_0 = 0, Vmax_Skin_1 = 0, Vmax_Skin_2 = 0, Vmax_Skin_3 = 0, Vmax_Skin_4 = 0,
   Vmax_Marrow_0 = 0, Vmax_Marrow_1 = 0, Vmax_Marrow_2 = 0, Vmax_Marrow_3 = 0, Vmax_Marrow_4 = 0,
   
-  Vmax_p_Adip_0 = 0, Vmax_p_Adip_1 = 0, Vmax_p_Adip_2 = 0, Vmax_p_Adip_3 = 0, Vmax_p_Adip_4 = 0,
-  Vmax_p_Bone_0 = 0, Vmax_p_Bone_1 = 0, Vmax_p_Bone_2 = 0, Vmax_p_Bone_3 = 0, Vmax_p_Bone_4 = 0,
-  Vmax_p_Brain_0 = 0, Vmax_p_Brain_1 = 0, Vmax_p_Brain_2 = 0, Vmax_p_Brain_3 = 0, Vmax_p_Brain_4 = 0,
-  Vmax_p_Heart_0 = 0, Vmax_p_Heart_1 = 0, Vmax_p_Heart_2 = 0, Vmax_p_Heart_3 = 0, Vmax_p_Heart_4 = 0,
-  Vmax_p_Kidney_0 = 0, Vmax_p_Kidney_1 = 0, Vmax_p_Kidney_2 = 0, Vmax_p_Kidney_3 = 0, Vmax_p_Kidney_4 = 0,
-  Vmax_p_Intestine_0 = 0, Vmax_p_Intestine_1 = 0, Vmax_p_Intestine_2 = 0, Vmax_p_Intestine_3 = 0, Vmax_p_Intestine_4 = 0,
-  Vmax_p_Liver_0 = 1000, Vmax_p_Liver_1 = 300, Vmax_p_Liver_2 = 300, Vmax_p_Liver_3 = 0, Vmax_p_Liver_4 = 0,
-  Vmax_p_Lung_0 = 0, Vmax_p_Lung_1 = 0, Vmax_p_Lung_2 = 0, Vmax_p_Lung_3 = 0, Vmax_p_Lung_4 = 0,
-  Vmax_p_Muscle_0 = 0, Vmax_p_Muscle_1 = 0, Vmax_p_Muscle_2 = 0, Vmax_p_Muscle_3 = 0, Vmax_p_Muscle_4 = 0,
-  Vmax_p_Skin_0 = 0, Vmax_p_Skin_1 = 0, Vmax_p_Skin_2 = 0, Vmax_p_Skin_3 = 0, Vmax_p_Skin_4 = 0,
-  Vmax_p_Marrow_0 = 0, Vmax_p_Marrow_1 = 0, Vmax_p_Marrow_2 = 0, Vmax_p_Marrow_3 = 0, Vmax_p_Marrow_4 = 0,
+  Vmax_p_Adip_1 = 0, Vmax_p_Adip_2 = 0, Vmax_p_Adip_3 = 0, Vmax_p_Adip_4 = 0,
+  Vmax_p_Bone_1 = 0, Vmax_p_Bone_2 = 0, Vmax_p_Bone_3 = 0, Vmax_p_Bone_4 = 0,
+  Vmax_p_Brain_1 = 0, Vmax_p_Brain_2 = 0, Vmax_p_Brain_3 = 0, Vmax_p_Brain_4 = 0,
+  Vmax_p_Heart_1 = 0, Vmax_p_Heart_2 = 0, Vmax_p_Heart_3 = 0, Vmax_p_Heart_4 = 0,
+  Vmax_p_Kidney_1 = 0, Vmax_p_Kidney_2 = 0, Vmax_p_Kidney_3 = 0, Vmax_p_Kidney_4 = 0,
+  Vmax_p_Intestine_1 = 0, Vmax_p_Intestine_2 = 0, Vmax_p_Intestine_3 = 0, Vmax_p_Intestine_4 = 0,
+  Vmax_p_Liver_1 = 1000, Vmax_p_Liver_2 = 300, Vmax_p_Liver_3 = 300, Vmax_p_Liver_4 = 0,
+  Vmax_p_Lung_1 = 0, Vmax_p_Lung_2 = 0, Vmax_p_Lung_3 = 0, Vmax_p_Lung_4 = 0,
+  Vmax_p_Muscle_1 = 0, Vmax_p_Muscle_2 = 0, Vmax_p_Muscle_3 = 0, Vmax_p_Muscle_4 = 0,
+  Vmax_p_Skin_1 = 0, Vmax_p_Skin_2 = 0, Vmax_p_Skin_3 = 0, Vmax_p_Skin_4 = 0,
+  Vmax_p_Marrow_1 = 0, Vmax_p_Marrow_2 = 0, Vmax_p_Marrow_3 = 0, Vmax_p_Marrow_4 = 0,
   
   # Km parameters
   Km_Adip_0 = 1, Km_Adip_1 = 1, Km_Adip_2 = 1, Km_Adip_3 = 1, Km_Adip_4 = 1,
