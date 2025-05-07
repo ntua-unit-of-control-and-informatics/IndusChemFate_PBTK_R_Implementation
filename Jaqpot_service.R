@@ -1218,7 +1218,12 @@ ode.func <- function(time, state, params, custom.func) {
     # Skin
     # Dermal absorption
     DermFact = 1 
-    dDeposRate = 0 
+    dDeposRate = 0 # Initialize to avoid errors
+    dEvapSC = 0      # Initialize to avoid errors
+    dStratCornAdd = 0  # Initialize to avoid errors
+    dStratCornDecr = 0  # Initialize to avoid errors
+    dEvapReal = 0     # Initialize to avoid errors
+    
     # Step 1: Calculate potential absorption rate
     MassInitAbs = 2 * dens_0 * Kpw0 * (MassLoad - StratCorn) / MassLoad / Fpart
     # Step 2: Check for quick depletion of surface material
